@@ -1,0 +1,8 @@
+/* Latin subsets of Cormorant Garamond, Parisienne and Imperial Script (SIL Open Font License). */
+@font-face{font-family:"Cormorant Garamond";font-style:italic;font-weight:400;font-display:swap;src:url("../fonts/CormorantGaramond-400-italic.woff2") format("woff2")}
+@font-face{font-family:"Cormorant Garamond";font-style:italic;font-weight:500;font-display:swap;src:url("../fonts/CormorantGaramond-500-italic.woff2") format("woff2")}
+@font-face{font-family:"Cormorant Garamond";font-style:normal;font-weight:400;font-display:swap;src:url("../fonts/CormorantGaramond-400.woff2") format("woff2")}
+@font-face{font-family:"Cormorant Garamond";font-style:normal;font-weight:500;font-display:swap;src:url("../fonts/CormorantGaramond-500.woff2") format("woff2")}
+@font-face{font-family:"Cormorant Garamond";font-style:normal;font-weight:600;font-display:swap;src:url("../fonts/CormorantGaramond-600.woff2") format("woff2")}
+@font-face{font-family:"Imperial Script";font-style:normal;font-weight:400;font-display:swap;src:url("../fonts/ImperialScript-400.woff2") format("woff2")}
+@font-face{font-family:"Parisienne";font-style:normal;font-weight:400;font-display:swap;src:url("../fonts/Parisienne-400.woff2") format("woff2")}
