@@ -19,7 +19,7 @@
   const mediaUrl = key => (media[key] ? safeUrl(media[key]) : '');
   const HERO_ART = './assets/hero.svg';
 
-  document.title = `${names} | Wedding invitation`;
+  document.title = `${names} | Ring / Roka Ceremony invitation`;
   document.body.classList.add('locked');
 
   const startsAt = new Date(wedding.dateISO);
@@ -63,7 +63,7 @@
       </div>` : `<img class="hero-art" src="${esc(mediaUrl('heroPoster') || HERO_ART)}" alt="${HERO_ALT}" decoding="async">`}
       <video class="hero-video" id="hero-video" muted loop playsinline preload="none" hidden></video>
       <div class="hero-copy">
-        <p class="occasion">The wedding of</p>
+        <p class="occasion">The Ring / Roka Ceremony of</p>
         <p class="date">${esc(wedding.dateLabel)}</p>
         <h1 class="names" id="names" tabindex="-1"><span>${esc(couple.first)}</span><i>&amp;</i><span>${esc(couple.second)}</span></h1>
         <p class="hero-note">${esc(couple.heroNote)}</p>
@@ -74,10 +74,30 @@
 
   const intro = () => `
     <section class="paper-section floral intro" id="our-invitation" aria-label="Our invitation">
+      <svg width="0" height="0" style="position: absolute;">
+        <filter id="remove-black-bg" color-interpolation-filters="sRGB">
+          <feColorMatrix type="matrix" values="
+            1 0 0 0 0
+            0 1 0 0 0
+            0 0 1 0 0
+            3 3 3 0 -0.1
+          " />
+        </filter>
+      </svg>
+      <div class="reveal" style="display: flex; justify-content: center; margin-bottom: 20px;">
+        <img src="./media/ganesha2.jpg" alt="Lord Ganesha" style="width: 220px; height: auto; filter: url(#remove-black-bg) drop-shadow(0px 12px 18px rgba(0,0,0,0.15));">
+      </div>
       <h2 class="script reveal">${esc(couple.subtitle)}</h2>
       <div class="rule" aria-hidden="true"></div>
       <p class="reveal">${esc(wedding.salutation)}</p>
       <p class="invitation-note reveal">${esc(wedding.invitationNote)}</p>
+      <div class="parents-section reveal" style="margin-top: 2rem; font-family: 'Cormorant Garamond', serif; font-size: 1.2rem;">
+        <p style="margin-bottom: 1rem;">
+          <strong>Grandson of:</strong><br>${esc(couple.groomGrandparents)}<br>
+          <strong>Son of:</strong><br>${esc(couple.groomParents)}
+        </p>
+        <p><strong>Daughter of:</strong><br>${esc(couple.brideParents)}</p>
+      </div>
     </section>`;
 
   const countdown = () => `
@@ -138,7 +158,7 @@
   const closing = () => `
     <footer class="closing" aria-labelledby="closing-title">
       <div class="closing-scene">
-        <img class="closing-art" src="${esc(mediaUrl('heroPoster') || HERO_ART)}" alt="" loading="lazy" decoding="async">
+        <img class="closing-art" src="${esc(mediaUrl('closingPoster') || HERO_ART)}" alt="" loading="lazy" decoding="async">
         <div class="closing-copy reveal">
           <p class="closing-eyebrow">The beginning of our forever</p>
           <h2 class="closing-title" id="closing-title">With all<br><em>our love</em></h2>
@@ -151,7 +171,14 @@
         <p class="closing-caption">A little moment. A lifetime of love.</p>
       </div>
       <div class="closing-colophon">
-        <button class="reopen" id="reopen" type="button">Open the envelope again <span aria-hidden="true">↺</span></button>
+        <a href="https://www.instagram.com/zetron.tech" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 8px; color: var(--metal); text-decoration: none; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; margin-bottom: 20px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+          CRAFTED BY ZETRON.TECH
+        </a>
         ${mediaUrl('music') && media.musicTitle ? `<p class="music-credit">Music: ${mediaUrl('musicSource') ? `<a href="${esc(mediaUrl('musicSource'))}" target="_blank" rel="noopener noreferrer">${esc(media.musicTitle)}</a>` : esc(media.musicTitle)}</p>` : ''}
       </div>
     </footer>`;
@@ -162,7 +189,7 @@
       ${hero()}${intro()}${countdown()}${timeline()}${venueSection()}${etiquette()}${rsvpSection()}${closing()}
     </main>
     <div class="media-controls" id="media-controls" hidden>
-      <button class="media-button" id="motion" type="button" aria-pressed="false" hidden>Pause motion</button>
+
       <button class="media-button" id="music" type="button" aria-pressed="false" hidden>Play music</button>
     </div>
     <audio id="audio" loop preload="none"></audio>
@@ -174,6 +201,7 @@
   const ambience = window.initInvitationMotion({ reduced });
   const heroEl = document.querySelector('.hero');
   const heroScene = LAYERED_HERO ? window.createHeroScene(heroEl) : null;
+  const globalPetals = window.initGlobalPetals ? window.initGlobalPetals() : null;
   let heroRevealed = false;
   const builtInOpening = !mediaUrl('openingVideo');
   const opening = window.createOpening({
@@ -222,19 +250,15 @@
   function syncMotion() {
     const stopped = motionPaused || reduced.matches;
     ambience.setPaused(stopped || !opened);
-    const btn = $('motion');
-    btn.hidden = false;
-    btn.disabled = reduced.matches;
-    btn.textContent = reduced.matches ? 'Reduced motion' : (motionPaused ? 'Play motion' : 'Pause motion');
-    btn.setAttribute('aria-pressed', String(stopped));
     const live = opened && heroRevealed && !stopped;
     heroEl.classList.toggle('live', live && LAYERED_HERO);
     if (heroScene) live ? heroScene.start() : heroScene.stop();
+    if (globalPetals) live ? globalPetals.start() : globalPetals.stop();
     heroVideo.hidden = stopped || !mediaUrl('heroVideo');
     if (stopped || !opened || !heroRevealed) heroVideo.pause();
     else if (mediaUrl('heroVideo')) heroVideo.play().catch(() => { heroVideo.hidden = true; });
   }
-  $('motion').addEventListener('click', () => { if (reduced.matches) return; motionPaused = !motionPaused; syncMotion(); });
+
   reduced.addEventListener('change', e => { motionPaused = e.matches; if (e.matches && opened) finishOpening(); syncMotion(); });
   heroVideo.addEventListener('error', () => { heroVideo.hidden = true; });
 
@@ -315,6 +339,7 @@
     document.body.classList.add('locked');
     ambience.setPaused(true);
     heroEl.classList.remove('live'); if (heroScene) heroScene.stop();
+    if (globalPetals) globalPetals.stop();
     openingVideo.pause(); openingVideo.currentTime = 0; openingVideo.hidden = true;
     heroVideo.pause(); heroVideo.currentTime = 0;
     opening.reset();
@@ -331,7 +356,7 @@
 
   $('open').addEventListener('click', openInvitation);
   $('skip').addEventListener('click', () => { opening.stop(); finishOpening(); });
-  $('reopen').addEventListener('click', reopenEnvelope);
+
   openingVideo.addEventListener('ended', finishOpening);
   openingVideo.addEventListener('error', () => { if (opened) finishOpening(); });
   openingVideo.addEventListener('timeupdate', () => {

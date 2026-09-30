@@ -1,10 +1,9 @@
-/* ───────── Tokens ───────── */
 :root {
   color-scheme: light;
-  --paper: #f7ede9;
-  --ink: #492738;
-  --accent: #682e49;
-  --metal: #92744e;
+  --paper: #fdfaf6;
+  --ink: #5a4b52;
+  --accent: #d8b4be;
+  --metal: #c2a78c;
   --col: 560px;
   --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --script: "Parisienne", "Snell Roundhand", cursive;
@@ -265,7 +264,7 @@ body.revealed .hero-copy > :nth-child(5) { animation-delay: calc(var(--text-dela
 .closing-art { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: center bottom; }
 .closing-scene::after {
   content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-  background: linear-gradient(180deg, var(--paper) 0%, color-mix(in srgb, var(--paper) 80%, transparent) 10%, color-mix(in srgb, var(--paper) 25%, transparent) 28%, transparent 65%, var(--paper) 100%);
+  background: linear-gradient(180deg, var(--paper) 0%, color-mix(in srgb, var(--paper) 85%, transparent) 15%, color-mix(in srgb, var(--paper) 70%, transparent) 50%, color-mix(in srgb, var(--paper) 85%, transparent) 85%, var(--paper) 100%);
 }
 .closing-copy { width: 100%; max-width: 350px; }
 .closing-eyebrow { margin: 0 0 27px; font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
@@ -283,7 +282,7 @@ body.revealed .hero-copy > :nth-child(5) { animation-delay: calc(var(--text-dela
 }
 .closing-rsvp:hover { background: var(--paper); transform: translateY(-2px); }
 .closing-caption { position: absolute; bottom: 26px; left: 25px; right: 25px; margin: 0; font-size: 14px; font-style: italic; }
-.closing-colophon { padding: 10px 25px 100px; background: var(--paper); }
+.closing-colophon { padding: 10px 25px 30px; background: var(--paper); }
 .reopen {
   min-height: 44px; margin: 0; padding: 10px 0; border: 0; border-bottom: 1px solid color-mix(in srgb, var(--closing-line) 50%, transparent);
   background: none; color: var(--ink); font-size: 14px;

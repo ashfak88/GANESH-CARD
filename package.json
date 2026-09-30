@@ -1,0 +1,10 @@
+{
+  "name": "roihan-meera-invitation",
+  "version": "1.0.0",
+  "description": "Illustrated wedding invitation static site",
+  "scripts": {
+    "dev": "npx serve .",
+    "start": "npx serve .",
+    "build:art": "node tools/build-art.js"
+  }
+}
