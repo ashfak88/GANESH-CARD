@@ -140,7 +140,13 @@
     <section class="paper-section floral etiquette" aria-label="Guest details">
       <article class="reveal"><h2 class="script">Dress code</h2><p>${esc(details.dressCode)}</p></article>
       <div class="rule" aria-hidden="true"></div>
-      <article class="reveal"><h2 class="script">Contact Us</h2><p>${(details.contacts || []).map(c => esc(c)).join('<br>')}</p></article>
+      <article class="reveal"><h2 class="script">Contact Us</h2><p>${(details.contacts || []).map(c => {
+        const parts = c.split(' - ');
+        if (parts.length === 2) {
+          return `${esc(parts[0])} - <a href="tel:${esc(parts[1]).replace(/[^\d+]/g, '')}" style="color: inherit; text-decoration: none; font-weight: bold;">${esc(parts[1])}</a>`;
+        }
+        return esc(c).replace(/([0-9+\-\s()]{9,})/, m => `<a href="tel:${m.replace(/[^\d+]/g, '')}" style="color: inherit; text-decoration: none; font-weight: bold;">${m}</a>`);
+      }).join('<br>')}</p></article>
     </section>`;
 
   const rsvpSection = () => `
