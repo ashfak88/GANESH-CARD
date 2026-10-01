@@ -37,12 +37,15 @@ window.WEDDING_DATA = {
 
   details: {
     dressCode: "Pastel colours are preferred for our special day.",
-    giftPreference: "Your presence is our greatest gift. Kindly, no boxed gifts."
+    contacts: [
+      "Hari Singh - 9354685104",
+      "Hitender Kumar - 9654831667",
+      "Bhupender Kumar - 9818240256"
+    ]
   },
 
   rsvp: {
 
-    email: "rsvp@example.com",
     heading: "A place in our hearts",
     note: "Your presence would make our day even more special. Please let us know if you can join us.",
     deadline: "20 October 2026"

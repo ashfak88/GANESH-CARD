@@ -1,8 +1,7 @@
 /* RSVP form. Nothing is stored or sent by this site: submitting opens the
    guest's email app with a pre-written reply addressed to the host. */
 window.initWeddingRSVP = function (form, config, names) {
-  const email = String(config.email || '').trim();
-  const emailOk = /^[^\s@<>?,;:%]+@[^\s@<>?,;:%]+\.[^\s@<>?,;:%]+$/.test(email);
+  // No email config needed for WhatsApp
 
   form.innerHTML = `
     <label for="rsvp-name">Your full name</label>
@@ -18,7 +17,7 @@ window.initWeddingRSVP = function (form, config, names) {
       <input id="rsvp-count" name="guestCount" type="number" min="1" max="100" step="1" value="1" disabled aria-describedby="rsvp-count-help">
       <small id="rsvp-count-help">Including yourself</small>
     </div>
-    <button type="submit" class="action rsvp-link">Prepare RSVP email</button>
+    <button type="submit" class="action rsvp-link">Prepare RSVP WhatsApp</button>
     <p class="rsvp-help" role="status"></p>`;
 
   const field = id => form.querySelector('#' + id);
@@ -36,19 +35,14 @@ window.initWeddingRSVP = function (form, config, names) {
   name.addEventListener('input', () => name.setCustomValidity(''));
   syncParty();
 
-  help.textContent = emailOk
-    ? 'Your email app will open with your reply. Please send the email to confirm your RSVP.'
-    : 'You’re welcome to fill in your details. Email RSVP will be available once the host adds their address.';
+  help.textContent = 'WhatsApp will open with your reply. Please send the message to confirm your RSVP.';
 
   form.addEventListener('submit', event => {
     event.preventDefault();
     const guest = name.value.trim();
     name.setCustomValidity(guest ? '' : 'Please enter your full name.');
     if (!form.reportValidity()) return;
-    if (!emailOk) {
-      help.textContent = 'The host’s RSVP email is not available yet. Your reply has not been sent.';
-      return;
-    }
+
     const attending = attendance.value === 'yes';
     const body = [
       `Dear ${names},`, '',
@@ -58,8 +52,8 @@ window.initWeddingRSVP = function (form, config, names) {
       `Number of guests attending: ${attending ? count.value : '0'}`, '',
       'With warm wishes,', guest
     ].join('\n');
-    const subject = `Wedding RSVP — ${names}`;
-    window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    help.textContent = 'Your reply is ready in your email app. Please press Send there to confirm your RSVP.';
+    const whatsappNumber = '919711710329'; // Defaulting to India country code based on 10-digit number
+    window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(body)}`, '_blank');
+    help.textContent = 'Your reply is ready in WhatsApp. Please press Send there to confirm your RSVP.';
   });
 };
